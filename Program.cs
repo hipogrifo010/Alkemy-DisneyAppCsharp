@@ -5,9 +5,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
 using System.Text;
 using ApiRestAlchemy.Services;
-using ApiRestAlchemy.Controllers;
-using AutoMapper;
-using ApiRestAlchemy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,7 +42,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
                      ClockSkew = TimeSpan.Zero
                  });
 
-builder.Services.AddAutoMapper(typeof(MapperInitializer));
 
 
 var app = builder.Build();

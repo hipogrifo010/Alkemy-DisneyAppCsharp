@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Security.Principal;
+
 
 namespace ApiRestAlchemy.Controllers
 {
@@ -33,11 +33,13 @@ namespace ApiRestAlchemy.Controllers
         /// </Retorna Listado de personajes>
         
         [HttpGet("/Listado/characters")]
-        public async Task<ActionResult<IEnumerable<PersonajeDTO>>> ListadoPersonajes()
+        public  ActionResult ListadoPersonajes()
         {
-            return await _context.Personajes
-                .Select(x => PersonajeToDTO(x))
-                .ToListAsync();
+            return Ok(_context.Personajes
+                        .Select(x => new {
+                            x.Nombre,
+                            x.Imagen,
+                            }));
         }
 
 
@@ -77,7 +79,6 @@ namespace ApiRestAlchemy.Controllers
         }
 
 
-
         /// <SEARCHCHARACTERS>
         /// Utilizar Query a partir de las siguientes URL
         /// https://localhost:7105/Busqueda/Characters?name="NOMBRE"
@@ -110,9 +111,7 @@ namespace ApiRestAlchemy.Controllers
                 .Select(x => PersonajeToDTO(x))
                 .ToListAsync();
         }
-
-        
-        
+  
         /// <POSTCHARACTERS>
         /// 
         /// </ADVERTENCIA!,CharacterId es identidad ,es decir dejar en Valor 0>
@@ -138,7 +137,6 @@ namespace ApiRestAlchemy.Controllers
 
         }
 
- 
 
         /// <PUTCHARACTERS>
         /// 
@@ -162,8 +160,6 @@ namespace ApiRestAlchemy.Controllers
             {
                 return BadRequest();
             }
-
-
 
             _context.Entry(personaje).State = EntityState.Modified;
 
@@ -216,11 +212,17 @@ namespace ApiRestAlchemy.Controllers
         /// </Retorna Listado de peliculas>
 
         [HttpGet("/Listado/movies")]
-        public async Task<ActionResult<IEnumerable<PeliculaOserieDTO>>> ListadoDePeliculas()
+        public ActionResult ListadoDePeliculas()
         {
-            return await _context.PeliculasOseries
-                .Select(x => PeliculaOserieToDTO(x))
-                .ToListAsync();
+            return Ok(_context.PeliculasOseries
+             .Select(x => new {
+                 MovieId = x.MovieId,
+                 Titulo = x.Titulo,
+                 Imagen = x.Imagen,
+                 FechaDeCreacion = x.FechaDeCreacion
+             }));
+
+ 
         }
 
 
@@ -299,8 +301,7 @@ namespace ApiRestAlchemy.Controllers
             }
 
 
-             return Ok(peliculaQueryable
-                                      
+             return Ok(peliculaQueryable    
                                        .Select(x => new {
                                            x.Titulo,
                                            x.GenreId,
@@ -419,14 +420,7 @@ namespace ApiRestAlchemy.Controllers
         };
       
 
-        private static PeliculaOserieDTO PeliculaOserieToDTO(PeliculaOserie peliculaOserie) =>
-        new()
-        {
-           MovieId=peliculaOserie.MovieId,
-           Titulo= peliculaOserie.Titulo,
-           Imagen= peliculaOserie.Imagen,
-           FechaDeCreacion= peliculaOserie.FechaDeCreacion
-        };
+  
        
 
 

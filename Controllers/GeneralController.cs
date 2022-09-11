@@ -19,7 +19,6 @@ namespace ApiRestAlchemy.Controllers
     {
 
         private DatabaseContext _context;
-
         public GeneralController(DatabaseContext context)
         {
             _context = context;
@@ -35,6 +34,7 @@ namespace ApiRestAlchemy.Controllers
         [HttpGet("/Listado/characters")]
         public  ActionResult ListadoPersonajes()
         {
+            
             return Ok(_context.Personajes
                         .Select(x => new {
                             x.Nombre,
@@ -121,7 +121,6 @@ namespace ApiRestAlchemy.Controllers
         {
            Personaje persona = new()
             {
-
                CharacterId = personajeDTOdos.CharacterId,
                Nombre = personajeDTOdos.Nombre,
                Imagen = personajeDTOdos.Imagen,
@@ -221,7 +220,6 @@ namespace ApiRestAlchemy.Controllers
                  Imagen = x.Imagen,
                  FechaDeCreacion = x.FechaDeCreacion
              }));
-
  
         }
 

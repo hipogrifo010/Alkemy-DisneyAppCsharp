@@ -613,3 +613,11 @@ C:\Users\Grifo Gugenka\Desktop\JS\PROTO\prototipe\LABUR\FullStackWebApiRest\obj\
 C:\Users\Grifo Gugenka\Desktop\JS\PROTO\prototipe\LABUR\FullStackWebApiRest\obj\Debug\net6.0\ApiRestAlchemy.pdb
 C:\Users\Grifo Gugenka\Desktop\JS\PROTO\prototipe\LABUR\FullStackWebApiRest\obj\Debug\net6.0\ApiRestAlchemy.genruntimeconfig.cache
 C:\Users\Grifo Gugenka\Desktop\JS\PROTO\prototipe\LABUR\FullStackWebApiRest\obj\Debug\net6.0\ref\ApiRestAlchemy.dll
+C:\Users\Grifo Gugenka\Desktop\JS\PROTO\prototipe\LABUR\FullStackWebApiRest\bin\Debug\net6.0\BlazorDebugProxy\BrowserDebugHost.dll
+C:\Users\Grifo Gugenka\Desktop\JS\PROTO\prototipe\LABUR\FullStackWebApiRest\bin\Debug\net6.0\BlazorDebugProxy\BrowserDebugHost.runtimeconfig.json
+C:\Users\Grifo Gugenka\Desktop\JS\PROTO\prototipe\LABUR\FullStackWebApiRest\bin\Debug\net6.0\BlazorDebugProxy\BrowserDebugProxy.dll
+C:\Users\Grifo Gugenka\Desktop\JS\PROTO\prototipe\LABUR\FullStackWebApiRest\bin\Debug\net6.0\BlazorDebugProxy\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\Grifo Gugenka\Desktop\JS\PROTO\prototipe\LABUR\FullStackWebApiRest\bin\Debug\net6.0\BlazorDebugProxy\Microsoft.CodeAnalysis.dll
+C:\Users\Grifo Gugenka\Desktop\JS\PROTO\prototipe\LABUR\FullStackWebApiRest\bin\Debug\net6.0\BlazorDebugProxy\Newtonsoft.Json.dll
+C:\Users\Grifo Gugenka\Desktop\JS\PROTO\prototipe\LABUR\FullStackWebApiRest\bin\Debug\net6.0\ApiRestAlchemy.staticwebassets.runtime.json
+C:\Users\Grifo Gugenka\Desktop\JS\PROTO\prototipe\LABUR\FullStackWebApiRest\bin\Debug\net6.0\Microsoft.AspNetCore.Components.WebAssembly.Server.dll

@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
 using System.Text;
 using ApiRestAlchemy.Services;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +44,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
                  });
 
 
+builder.Services.AddCors(options => 
+                        { var frontEndUrl = configuration.GetValue<string>("frontend_url");
+                            options.AddDefaultPolicy(builder => { builder.WithOrigins(frontEndUrl).AllowAnyMethod().AllowAnyHeader();
+                            });
+                        });
 
 var app = builder.Build();
 
@@ -61,6 +67,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.MapControllers();
 

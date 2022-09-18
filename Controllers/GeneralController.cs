@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-
+using NuGet.Protocol;
 
 namespace ApiRestAlchemy.Controllers
 {
 
 
    [Route("api/[controller]")]
-   [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
+   //[Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
 
     [ApiController]
     public class GeneralController : ControllerBase
@@ -31,7 +31,7 @@ namespace ApiRestAlchemy.Controllers
         /// https://localhost:7105/Listado/characters
         /// </Retorna Listado de personajes>
         
-        [HttpGet("/Listado/characters")]
+        [HttpGet("/characters")]
         public  ActionResult ListadoPersonajes()
         {
             
@@ -49,21 +49,21 @@ namespace ApiRestAlchemy.Controllers
         /// https://localhost:7105/DetalleCharacter/
         /// </Retorna un personaje con el correspondiente Titulo de la pelicula de la participa>
 
-        [HttpGet("/DetalleCharacter/{CharacterName}")]
+        [HttpGet("/characters/{CharacterName}")]
         public ActionResult DetalleCharacter(string CharacterName)
         {
 
 
-            int peliculaId = _context.Personajes.Where(x => x.Nombre.Equals(CharacterName))
+            int thisCharacNameByMovieId = _context.Personajes.Where(x => x.Nombre.Equals(CharacterName))
                                                .Select(x => x.MovieId).FirstOrDefault();
 
 
-            var personajePelicula = _context.Personajes.Join(_context.PeliculasOseries, personaje => personaje.MovieId,
+            var personajeYpelicula = _context.Personajes.Join(_context.PeliculasOseries, personaje => personaje.MovieId,
                                      pelicula => pelicula.MovieId, (personaje, pelicula) => new { pelicula, personaje })
-                                    .Where(x => x.personaje.MovieId == peliculaId);
+                                    .Where(x => x.personaje.MovieId == thisCharacNameByMovieId);
 
 
-            return Ok(personajePelicula
+            return Ok(personajeYpelicula
                                        .Where(x => x.personaje.Nombre.Equals(CharacterName))
                                        .Select(x => new {
                                            x.personaje.Nombre,
@@ -85,7 +85,7 @@ namespace ApiRestAlchemy.Controllers
         /// https://localhost:7105/Busqueda/Characters?age="EDAD"
         /// https://localhost:7105/Busqueda/Characters?movieId="MovieId"
         /// </Retorna Query de busqueda de Characters>
-        [HttpGet("/Busqueda/Characters")]
+        [HttpGet("/searchresult/characters")]
         public async Task<ActionResult<List<PersonajeDTO>>> SearchCharacters([FromQuery] string? name, int? age, int? movies)
         {
 
@@ -116,7 +116,7 @@ namespace ApiRestAlchemy.Controllers
         /// 
         /// </ADVERTENCIA!,CharacterId es identidad ,es decir dejar en Valor 0>
 
-        [HttpPost("/Listado/Post/characters")]
+        [HttpPost("/new/characters")]
         public async Task<ActionResult<Personaje>> PostCharacter([FromBody] PersonajeDTOdos personajeDTOdos)
         {
            Personaje persona = new()
@@ -140,7 +140,7 @@ namespace ApiRestAlchemy.Controllers
         /// <PUTCHARACTERS>
         /// 
         /// </ingresar id del Personaje como Value,y tambien dentro del BODY>
-        [HttpPut("/Listado/characters/{id}")]
+        [HttpPut("/edit/characters/{id}")]
         public async Task<ActionResult<Personaje>> CharacterModification(int id, PersonajeDTOdos characterput)
         {
 
@@ -189,7 +189,7 @@ namespace ApiRestAlchemy.Controllers
         /// 
         /// </Ingresar el id del personaje como value para que este sea borrado de la base de datos.>
 
-        [HttpDelete("/Listado/Character/delete/{id}")]
+        [HttpDelete("/delete/characters/{id}")]
         public async Task<ActionResult<Personaje>> DeleteCharacter(int id)
         {
             var personaje = await _context.Personajes.FindAsync(id);
@@ -210,12 +210,11 @@ namespace ApiRestAlchemy.Controllers
         /// https://localhost:7105/Listado/movies
         /// </Retorna Listado de peliculas>
 
-        [HttpGet("/Listado/movies")]
+        [HttpGet("/movies")]
         public ActionResult ListadoDePeliculas()
         {
             return Ok(_context.PeliculasOseries
              .Select(x => new {
-                 MovieId = x.MovieId,
                  Titulo = x.Titulo,
                  Imagen = x.Imagen,
                  FechaDeCreacion = x.FechaDeCreacion
@@ -226,34 +225,52 @@ namespace ApiRestAlchemy.Controllers
 
 
         /// <GETDETALLEMOVIE>
-        /// Utilizar nombre luego  del endpoint  Eje : "https://localhost:7105/Detalle/Movie/Shrek"
-        /// https://localhost:7105/Detalle/Movie/
+        /// Utilizar nombre luego  del endpoint  Eje : "https://localhost:7105/movies/Shrek"
+        /// https://localhost:7105/movies/{}
         /// </Retorna un personaje con el correspondiente Titulo de la pelicula de la participa>
 
-        [HttpGet("/Detalle/Movie/{MovieName}")]
+        [HttpGet("/movies/{MovieName}")]
         public ActionResult DetalleMovie(string MovieName)
         {
-
-            int peliculaId = _context.PeliculasOseries.Where(x => x.Titulo.Equals(MovieName))
+            
+            int movieNameById = _context.PeliculasOseries.Where(x => x.Titulo.Equals(MovieName))
                                                .Select(x => x.MovieId).FirstOrDefault();
 
 
-            var personajePelicula = _context.Personajes.Join(_context.PeliculasOseries, personaje => personaje.MovieId,
+            var characterByMovieId = _context.Personajes.Join(_context.PeliculasOseries, personaje => personaje.MovieId,
                                      pelicula => pelicula.MovieId, (personaje, pelicula) => new { pelicula, personaje })
-                                    .Where(x => x.personaje.MovieId == peliculaId);
+                                    .Where(x => x.personaje.MovieId == movieNameById);
 
+            var realCharName = _context.Personajes.Select(x=>x.Nombre);
 
-            return Ok(personajePelicula
-                                       .Where(x => x.pelicula.MovieId.Equals(peliculaId))
-                                       .Select(x => new {
-                                           x.personaje.PeliculaOserie.Titulo,
-                                           x.personaje.PeliculaOserie.MovieId,
-                                           x.personaje.PeliculaOserie.Imagen,
-                                           x.personaje.PeliculaOserie.FechaDeCreacion,
-                                           x.personaje.PeliculaOserie.Calificacion,
-                                           x.personaje.Nombre
+            if (_context.Personajes.Any(x => x.MovieId == movieNameById))
+            {
 
-                                       }));
+                return Ok(characterByMovieId.Where(x => x.personaje.PeliculaOserie.MovieId.Equals(movieNameById)).Select(x => new
+                {
+                    x.personaje.PeliculaOserie.Titulo,
+                    x.personaje.PeliculaOserie.MovieId,
+                    x.personaje.PeliculaOserie.Imagen,
+                    x.personaje.PeliculaOserie.FechaDeCreacion,
+                    x.personaje.PeliculaOserie.Calificacion,
+                    x.personaje.Nombre
+
+                }));
+
+            }
+            else {
+                return Ok(_context.PeliculasOseries.Where(x => x.Titulo.Equals(MovieName)).Select(x => new
+                {
+                    x.Titulo,
+                    x.MovieId,
+                    x.Imagen,
+                    x.FechaDeCreacion,
+                    x.Calificacion,
+
+                }));
+            }
+
+          
 
         }
 
@@ -265,7 +282,7 @@ namespace ApiRestAlchemy.Controllers
         /// https://localhost:7105/Busqueda/Movies?genre="GenreId"
         /// </Retorna Query de busqueda de Movies>
 
-        [HttpGet("/Busqueda/movies")]
+        [HttpGet("/searchresult/movies")]
         public async Task<ActionResult<List<PeliculaOserieDTO>>> SearchMovies([FromQuery] string? name, string? order, int? genre)
         {
 
@@ -312,7 +329,7 @@ namespace ApiRestAlchemy.Controllers
         /// 
         /// </ADVERTENCIA!,MovieId es identidad ,es decir dejar en Valor 0 que actualizara automaticamente>
 
-        [HttpPost("/Listado/Post/movie")]
+        [HttpPost("/new/movies")]
         public async Task<ActionResult<PeliculaOserie>> PostMovie([FromBody] PeliculaDTOtoPost peliculaDTO)
         {
             PeliculaOserie peliculaoSerie = new()
@@ -325,16 +342,18 @@ namespace ApiRestAlchemy.Controllers
                 PersonajesAsociados = peliculaDTO.PersonajesAsociados,
                 GenreId = peliculaDTO.GenreId
             };
+
             _context.PeliculasOseries.Add(peliculaoSerie);
             await _context.SaveChangesAsync();
             return CreatedAtAction("ListadoDePeliculas", new { id = peliculaoSerie.MovieId }, peliculaoSerie);
+
 
         }
         
         /// <PUTMOVIE>
         /// 
         /// </ingresar id de la pelicula como Value, y tambien dentro del BODY>
-        [HttpPut("/Listado/movie/{id}")]
+        [HttpPut("/edit/movie/{id}")]
         public async Task<ActionResult<PeliculaOserie>> MovieModification(int id,PeliculaDTOtoPost peliput)
         {
 
@@ -382,7 +401,7 @@ namespace ApiRestAlchemy.Controllers
         /// 
         /// </Ingresar el id de la pelicula como value para que esta sea borrada de la base de datos.>
         
-        [HttpDelete("/Listado/Movie/delete/{id}")]
+        [HttpDelete("/delete/movies/{id}")]
         public async Task<ActionResult<PeliculaOserie>> DeleteMovie(int id)
         {
             var pelicula = await _context.PeliculasOseries.FindAsync(id);

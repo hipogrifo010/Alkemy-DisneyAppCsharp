@@ -56,10 +56,6 @@
               "target": "Package",
               "version": "[6.0.8, )"
             },
-            "Microsoft.AspNetCore.Components.WebAssembly.Server": {
-              "target": "Package",
-              "version": "[6.0.8, )"
-            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.8, )"

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "nyCgCvsN2651MRDoZ/sPu1WXe4bTFCoSLuRKFpc9V8Xsr4E3t6z1BQdyEUTCo3KTqG3tkNE0SaRtg5rEqfHc3w==",
+  "dgSpecHash": "BiwEo/RdIEDpfDiANFfzfnCRJPj6zDZ3ZSwkmndciAw3x7AqD7NSoVpd37B3sZ0Sz2HAvC+U2Rlrzaj7zQwEXw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Grifo Gugenka\\Desktop\\JS\\PROTO\\prototipe\\LABUR\\FullStackWebApiRest\\ApiRestAlchemy.csproj",
   "expectedPackageFiles": [
@@ -12,7 +12,6 @@
     "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\messagepackanalyzer\\2.1.152\\messagepackanalyzer.2.1.152.nupkg.sha512",
     "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\microsoft.aspnet.webapi.client\\5.2.9\\microsoft.aspnet.webapi.client.5.2.9.nupkg.sha512",
     "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.8\\microsoft.aspnetcore.authentication.jwtbearer.6.0.8.nupkg.sha512",
-    "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\microsoft.aspnetcore.components.webassembly.server\\6.0.8\\microsoft.aspnetcore.components.webassembly.server.6.0.8.nupkg.sha512",
     "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.8\\microsoft.aspnetcore.cryptography.internal.6.0.8.nupkg.sha512",
     "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.8\\microsoft.aspnetcore.cryptography.keyderivation.6.0.8.nupkg.sha512",
     "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\6.0.8\\microsoft.aspnetcore.identity.entityframeworkcore.6.0.8.nupkg.sha512",

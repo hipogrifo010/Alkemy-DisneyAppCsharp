@@ -118,7 +118,7 @@ namespace ApiRestAlchemy.Controllers
                 .Select(x => PersonajeToDTO(x))
                 .ToListAsync();
         }
-  
+ 
         /// <POSTCHARACTERS>
         /// 
         /// </ADVERTENCIA!,CharacterId es identidad ,es decir dejar en Valor 0>

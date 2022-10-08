@@ -70,7 +70,7 @@ namespace ApiRestAlchemy.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Imagen = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaDeCreacion = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    FechaDeCreacion = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -191,7 +191,7 @@ namespace ApiRestAlchemy.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Imagen = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaDeCreacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FechaDeCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Calificacion = table.Column<int>(type: "int", nullable: false),
                     PersonajesAsociados = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GenreId = table.Column<int>(type: "int", nullable: false)
@@ -244,12 +244,12 @@ namespace ApiRestAlchemy.Migrations
             migrationBuilder.InsertData(
                 table: "PeliculaOserie",
                 columns: new[] { "MovieId", "Calificacion", "FechaDeCreacion", "GenreId", "Imagen", "PersonajesAsociados", "Titulo" },
-                values: new object[] { 1, 4, "22/04/2001", 1, " ", "Shrek,Burro,Fiora", "Shrek" });
+                values: new object[] { 1, 4, new DateTime(2001, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, " ", "Shrek,Burro,Fiora", "Shrek" });
 
             migrationBuilder.InsertData(
                 table: "PeliculaOserie",
                 columns: new[] { "MovieId", "Calificacion", "FechaDeCreacion", "GenreId", "Imagen", "PersonajesAsociados", "Titulo" },
-                values: new object[] { 2, 4, "22/11/1995", 2, " ", "Woody,Buzz Lightyear,Andy", "Toy Story" });
+                values: new object[] { 2, 4, new DateTime(1995, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, " ", "Woody,Buzz Lightyear,Andy", "Toy Story" });
 
             migrationBuilder.InsertData(
                 table: "Personaje",

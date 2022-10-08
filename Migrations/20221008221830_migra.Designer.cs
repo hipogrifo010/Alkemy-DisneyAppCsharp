@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiRestAlchemy.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220918153250_migra")]
+    [Migration("20221008221830_migra")]
     partial class migra
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -135,9 +135,8 @@ namespace ApiRestAlchemy.Migrations
                     b.Property<int>("Calificacion")
                         .HasColumnType("int");
 
-                    b.Property<string>("FechaDeCreacion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("FechaDeCreacion")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("GenreId")
                         .HasColumnType("int");
@@ -165,7 +164,7 @@ namespace ApiRestAlchemy.Migrations
                         {
                             MovieId = 1,
                             Calificacion = 4,
-                            FechaDeCreacion = "22/04/2001",
+                            FechaDeCreacion = new DateTime(2001, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GenreId = 1,
                             Imagen = " ",
                             PersonajesAsociados = "Shrek,Burro,Fiora",
@@ -175,7 +174,7 @@ namespace ApiRestAlchemy.Migrations
                         {
                             MovieId = 2,
                             Calificacion = 4,
-                            FechaDeCreacion = "22/11/1995",
+                            FechaDeCreacion = new DateTime(1995, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             GenreId = 2,
                             Imagen = " ",
                             PersonajesAsociados = "Woody,Buzz Lightyear,Andy",
@@ -191,9 +190,8 @@ namespace ApiRestAlchemy.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovieId"), 1L, 1);
 
-                    b.Property<string>("FechaDeCreacion")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("FechaDeCreacion")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Imagen")
                         .IsRequired()

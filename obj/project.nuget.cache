@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "BiwEo/RdIEDpfDiANFfzfnCRJPj6zDZ3ZSwkmndciAw3x7AqD7NSoVpd37B3sZ0Sz2HAvC+U2Rlrzaj7zQwEXw==",
+  "dgSpecHash": "1kLCIHHV7XJnaHGe5CRqdvEZl8LdjcnQ94UaEX6yG3md2DMmAVGeJgq4c2cvAqqGAqmY4iDCbfMlahuVQJ0ZYg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Grifo Gugenka\\Desktop\\JS\\PROTO\\prototipe\\LABUR\\FullStackWebApiRest\\ApiRestAlchemy.csproj",
+  "projectFilePath": "D:\\JS\\PROTO\\prototipe\\LABUR\\FullStackWebApiRest\\ApiRestAlchemy.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
     "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",

@@ -1,11 +1,19 @@
 {
   "Version": 1,
-  "Hash": "xtmVvrYNR4R+Hl+hFC4pWvVMiYKIQk3ViYZ1XG9M0sA=",
+  "Hash": "otnLJ2KgSGfu5T69k8RFUvDPKZvwK5Hcs6e6SxLQ8B8=",
   "Source": "ApiRestAlchemy",
   "BasePath": "_content/ApiRestAlchemy",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "ApiRestAlchemy\\wwwroot",
+      "Source": "ApiRestAlchemy",
+      "ContentRoot": "D:\\JS\\PROTO\\prototipe\\LABUR\\FullStackWebApiRest\\wwwroot\\",
+      "BasePath": "_content/ApiRestAlchemy",
+      "Pattern": "**"
+    }
+  ],
   "Assets": []
 }

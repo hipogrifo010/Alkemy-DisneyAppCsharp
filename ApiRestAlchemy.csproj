@@ -38,6 +38,8 @@
 
   <ItemGroup>
     <Folder Include="Configuration\" />
+    <Folder Include="NewFolder\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

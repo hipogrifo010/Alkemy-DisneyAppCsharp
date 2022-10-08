@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Grifo Gugenka\\Desktop\\JS\\PROTO\\prototipe\\LABUR\\FullStackWebApiRest\\ApiRestAlchemy.csproj": {}
+    "D:\\JS\\PROTO\\prototipe\\LABUR\\FullStackWebApiRest\\ApiRestAlchemy.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Grifo Gugenka\\Desktop\\JS\\PROTO\\prototipe\\LABUR\\FullStackWebApiRest\\ApiRestAlchemy.csproj": {
+    "D:\\JS\\PROTO\\prototipe\\LABUR\\FullStackWebApiRest\\ApiRestAlchemy.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Grifo Gugenka\\Desktop\\JS\\PROTO\\prototipe\\LABUR\\FullStackWebApiRest\\ApiRestAlchemy.csproj",
+        "projectUniqueName": "D:\\JS\\PROTO\\prototipe\\LABUR\\FullStackWebApiRest\\ApiRestAlchemy.csproj",
         "projectName": "ApiRestAlchemy",
-        "projectPath": "C:\\Users\\Grifo Gugenka\\Desktop\\JS\\PROTO\\prototipe\\LABUR\\FullStackWebApiRest\\ApiRestAlchemy.csproj",
+        "projectPath": "D:\\JS\\PROTO\\prototipe\\LABUR\\FullStackWebApiRest\\ApiRestAlchemy.csproj",
         "packagesPath": "C:\\Users\\Grifo Gugenka\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Grifo Gugenka\\Desktop\\JS\\PROTO\\prototipe\\LABUR\\FullStackWebApiRest\\obj\\",
+        "outputPath": "D:\\JS\\PROTO\\prototipe\\LABUR\\FullStackWebApiRest\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

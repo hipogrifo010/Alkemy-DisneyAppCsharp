@@ -6,25 +6,32 @@ using System.Linq.Dynamic.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using NuGet.Protocol;
+using System.Web;
+using Microsoft.AspNetCore.Hosting;
+using ApiRestAlchemy.Database.ViewModel;
+using System.Diagnostics;
 
 namespace ApiRestAlchemy.Controllers
 {
-
+   
 
    [Route("api/[controller]")]
-   //[Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
+  //[Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
 
     [ApiController]
     public class GeneralController : ControllerBase
     {
+        public static IWebHostEnvironment _webHostEnvironment;
 
         private DatabaseContext _context;
-        public GeneralController(DatabaseContext context)
+        public GeneralController(DatabaseContext context,IWebHostEnvironment env)
         {
+            _webHostEnvironment = env;
             _context = context;
         }
 
 
+                
         /////////////Personaje///////////
   
         /// <LISTADOCHARACTERS>
@@ -136,7 +143,56 @@ namespace ApiRestAlchemy.Controllers
 
         }
 
+        /// <summary>
+        /// POST Y GET IMAGENES
+        /// </summary>
+        /// 
+        [HttpGet("/get/imagecharacter")]
+        public IActionResult GetMovieImage(string name)
+        {
+            var personaje = _context.Personajes.FirstOrDefault(a => a.Nombre == name);
 
+            byte[] b = System.IO.File.ReadAllBytes(_webHostEnvironment.ContentRootPath + "Img\\" + personaje.Imagen);   // You can use your own method over here.         
+            return File(b, "image/jpg");
+
+        }
+        [HttpPost("/new/imagecharacter")]
+        public async Task<ActionResult<PeliculaOserie>> PostMovieImage(string name, [Bind] IFormFile files)
+
+        {
+
+            var personaje = _context.Personajes.FirstOrDefault(a => a.Nombre == name);
+            var id = personaje.MovieId;
+            var filePath = _webHostEnvironment.ContentRootPath + "Img\\" + files.FileName;
+            using (var stream = System.IO.File.Create(filePath))
+            {
+                files.CopyToAsync(stream);
+            }
+            personaje.Imagen = files.FileName;
+
+            try
+            {
+
+                _context.Entry(personaje).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PeliculaExist(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+
+            }
+
+            return Ok();
+
+        }
         /// <PUTCHARACTERS>
         /// 
         /// </ingresar id del Personaje como Value,y tambien dentro del BODY>
@@ -222,8 +278,6 @@ namespace ApiRestAlchemy.Controllers
  
         }
 
-
-
         /// <GETDETALLEMOVIE>
         /// Utilizar nombre luego  del endpoint  Eje : "https://localhost:7105/movies/Shrek"
         /// https://localhost:7105/movies/{}
@@ -241,36 +295,33 @@ namespace ApiRestAlchemy.Controllers
                                      pelicula => pelicula.MovieId, (personaje, pelicula) => new { pelicula, personaje })
                                     .Where(x => x.personaje.MovieId == movieNameById);
 
-            var realCharName = _context.Personajes.Select(x=>x.Nombre);
+         
+            
+            var moviebydetails = _context.PeliculasOseries.Where(x => x.Titulo.Equals(MovieName))
+                .Select(x => new {
+                            x.Titulo,
+                            x.MovieId,
+                            x.Imagen,
+                            x.FechaDeCreacion,
+                            x.Calificacion,
+                            x.PersonajesAsociados,
+                            x.GenreId
+                        }).Distinct();
+
+            var onlyCharacters = characterByMovieId.Where(x => x.personaje.PeliculaOserie.MovieId.Equals(movieNameById)).Select(x => new
+            { x.personaje.Nombre});
+
 
             if (_context.Personajes.Any(x => x.MovieId == movieNameById))
             {
-
-                return Ok(characterByMovieId.Where(x => x.personaje.PeliculaOserie.MovieId.Equals(movieNameById)).Select(x => new
-                {
-                    x.personaje.PeliculaOserie.Titulo,
-                    x.personaje.PeliculaOserie.MovieId,
-                    x.personaje.PeliculaOserie.Imagen,
-                    x.personaje.PeliculaOserie.FechaDeCreacion,
-                    x.personaje.PeliculaOserie.Calificacion,
-                    x.personaje.Nombre
-
-                }));
+                var allcharactedlisted = _context.Personajes.Select(x => x.Nombre);
+                return Ok(new { moviebydetails, allcharactedlisted });
 
             }
             else {
-                return Ok(_context.PeliculasOseries.Where(x => x.Titulo.Equals(MovieName)).Select(x => new
-                {
-                    x.Titulo,
-                    x.MovieId,
-                    x.Imagen,
-                    x.FechaDeCreacion,
-                    x.Calificacion,
-
-                }));
+                string[] allcharactedlisted = new string[] { "Ninguno" };
+                return Ok(new { moviebydetails, allcharactedlisted });
             }
-
-          
 
         }
 
@@ -328,10 +379,58 @@ namespace ApiRestAlchemy.Controllers
         /// <POSTMOVIE>
         /// 
         /// </ADVERTENCIA!,MovieId es identidad ,es decir dejar en Valor 0 que actualizara automaticamente>
+        /// 
+        [HttpGet("/get/imagemovie")]
+        public IActionResult GetImage(string name)
+        {
+            var pelicula = _context.PeliculasOseries.FirstOrDefault(a => a.Titulo == name);
+   
+            byte[] b = System.IO.File.ReadAllBytes(_webHostEnvironment.ContentRootPath + "Img\\" + pelicula.Imagen);   // You can use your own method over here.         
+            return File(b,"image/jpg");
 
+        }
+        [HttpPost("/new/imagemovie")]
+        public async Task<ActionResult<PeliculaOserie>> PostMovie(string name ,[Bind]IFormFile files)
+
+        {
+            
+            var pelicula = _context.PeliculasOseries.FirstOrDefault(a => a.Titulo == name);
+            var id = pelicula.MovieId;
+            var filePath = _webHostEnvironment.ContentRootPath + "Img\\" + files.FileName;
+            using (var stream = System.IO.File.Create(filePath))
+            {
+                files.CopyToAsync(stream);
+            }
+            pelicula.Imagen = files.FileName ;
+           
+            try
+            {
+
+                _context.Entry(pelicula).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PeliculaExist(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+
+            }
+
+            return Ok();
+
+        }
         [HttpPost("/new/movies")]
         public async Task<ActionResult<PeliculaOserie>> PostMovie([FromBody] PeliculaDTOtoPost peliculaDTO)
+
         {
+
             PeliculaOserie peliculaoSerie = new()
             {
                 MovieId = peliculaDTO.MovieId,
@@ -343,17 +442,20 @@ namespace ApiRestAlchemy.Controllers
                 GenreId = peliculaDTO.GenreId
             };
 
+
             _context.PeliculasOseries.Add(peliculaoSerie);
+            _context.SaveChanges();
             await _context.SaveChangesAsync();
             return CreatedAtAction("ListadoDePeliculas", new { id = peliculaoSerie.MovieId }, peliculaoSerie);
 
 
         }
-        
+       
+
         /// <PUTMOVIE>
         /// 
         /// </ingresar id de la pelicula como Value, y tambien dentro del BODY>
-        [HttpPut("/edit/movie/{id}")]
+        [HttpPut("/edit/movies/{id}")]
         public async Task<ActionResult<PeliculaOserie>> MovieModification(int id,PeliculaDTOtoPost peliput)
         {
 

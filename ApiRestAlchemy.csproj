@@ -38,6 +38,8 @@
 
   <ItemGroup>
     <Folder Include="Configuration\" />
+    <Folder Include="Img\Movies\" />
+    <Folder Include="Img\Characters\" />
     <Folder Include="NewFolder\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>

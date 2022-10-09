@@ -16,7 +16,7 @@ namespace ApiRestAlchemy.Controllers
    
 
    [Route("api/[controller]")]
-  //[Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
+   [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
 
     [ApiController]
     public class GeneralController : ControllerBase
@@ -152,7 +152,7 @@ namespace ApiRestAlchemy.Controllers
         {
             var personaje = _context.Personajes.FirstOrDefault(a => a.Nombre == name);
 
-            byte[] b = System.IO.File.ReadAllBytes(_webHostEnvironment.ContentRootPath + "Img\\" + personaje.Imagen);   // You can use your own method over here.         
+            byte[] b = System.IO.File.ReadAllBytes(_webHostEnvironment.ContentRootPath + "Img\\Characters\\" + personaje.Imagen);   // You can use your own method over here.         
             return File(b, "image/jpg");
 
         }
@@ -163,7 +163,7 @@ namespace ApiRestAlchemy.Controllers
 
             var personaje = _context.Personajes.FirstOrDefault(a => a.Nombre == name);
             var id = personaje.MovieId;
-            var filePath = _webHostEnvironment.ContentRootPath + "Img\\" + files.FileName;
+            var filePath = _webHostEnvironment.ContentRootPath + "Img\\Characters\\" + files.FileName;
             using (var stream = System.IO.File.Create(filePath))
             {
                 files.CopyToAsync(stream);
@@ -273,7 +273,7 @@ namespace ApiRestAlchemy.Controllers
              .Select(x => new {
                  Titulo = x.Titulo,
                  Imagen = x.Imagen,
-                 FechaDeCreacion = x.FechaDeCreacion
+                 FechaDeCreacion = x.FechaDeCreacion.ToShortDateString()
              }));
  
         }
@@ -307,11 +307,14 @@ namespace ApiRestAlchemy.Controllers
                             x.PersonajesAsociados,
                             x.GenreId
                         }).Distinct();
+          
+            //moviebydetails.ToList().ForEach(c => c.FechaDeCreacion.ToShortDateString());
+            //var moviebydetails = moviebydetailse.Any().FechaDeCreacion.ToShortDateString();
 
             var onlyCharacters = characterByMovieId.Where(x => x.personaje.PeliculaOserie.MovieId.Equals(movieNameById)).Select(x => new
             { x.personaje.Nombre});
 
-
+            
             if (_context.Personajes.Any(x => x.MovieId == movieNameById))
             {
                 var allcharactedlisted = _context.Personajes.Select(x => x.Nombre);
@@ -328,9 +331,9 @@ namespace ApiRestAlchemy.Controllers
 
         /// <SEARCHMOVIE>
         /// Utilizar Query a partir de las siguientes URL
-        /// https://localhost:7105/Busqueda/Movies?name="NOMBRE"
-        /// https://localhost:7105/Busqueda/Movies?order="ASC"or"DESC"
-        /// https://localhost:7105/Busqueda/Movies?genre="GenreId"
+        /// https://localhost:7105/searchresult/movies?name="NOMBRE"
+        /// https://localhost:7105/searchresult/movies?order="ASC"or"DESC"
+        /// https://localhost:7105/searchresult/movies?genre="GenreId"
         /// </Retorna Query de busqueda de Movies>
 
         [HttpGet("/searchresult/movies")]
@@ -385,7 +388,7 @@ namespace ApiRestAlchemy.Controllers
         {
             var pelicula = _context.PeliculasOseries.FirstOrDefault(a => a.Titulo == name);
    
-            byte[] b = System.IO.File.ReadAllBytes(_webHostEnvironment.ContentRootPath + "Img\\" + pelicula.Imagen);   // You can use your own method over here.         
+            byte[] b = System.IO.File.ReadAllBytes(_webHostEnvironment.ContentRootPath + "Img\\Movies\\" + pelicula.Imagen);   // You can use your own method over here.         
             return File(b,"image/jpg");
 
         }
@@ -396,7 +399,7 @@ namespace ApiRestAlchemy.Controllers
             
             var pelicula = _context.PeliculasOseries.FirstOrDefault(a => a.Titulo == name);
             var id = pelicula.MovieId;
-            var filePath = _webHostEnvironment.ContentRootPath + "Img\\" + files.FileName;
+            var filePath = _webHostEnvironment.ContentRootPath + "Img\\Movies\\" + files.FileName;
             using (var stream = System.IO.File.Create(filePath))
             {
                 files.CopyToAsync(stream);

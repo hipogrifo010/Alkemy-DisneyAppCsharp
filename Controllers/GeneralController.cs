@@ -16,7 +16,7 @@ namespace ApiRestAlchemy.Controllers
    
 
    [Route("api/[controller]")]
-   [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
+  //[Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
 
     [ApiController]
     public class GeneralController : ControllerBase
@@ -147,16 +147,16 @@ namespace ApiRestAlchemy.Controllers
         /// POST Y GET IMAGENES
         /// </summary>
         /// 
-        [HttpGet("/get/imagecharacter")]
+        [HttpGet("/get/imagecharacter/{name}")]
         public IActionResult GetMovieImage(string name)
         {
             var personaje = _context.Personajes.FirstOrDefault(a => a.Nombre == name);
 
-            byte[] b = System.IO.File.ReadAllBytes(_webHostEnvironment.ContentRootPath + "Img\\Characters\\" + personaje.Imagen);   // You can use your own method over here.         
+            byte[] b = System.IO.File.ReadAllBytes(_webHostEnvironment.ContentRootPath+"Img\\Characters\\" + personaje.Imagen);   // You can use your own method over here.         
             return File(b, "image/jpg");
 
         }
-        [HttpPost("/new/imagecharacter")]
+        [HttpPost("/new/imagecharacter/{name}")]
         public async Task<ActionResult<PeliculaOserie>> PostMovieImage(string name, [Bind] IFormFile files)
 
         {
@@ -383,7 +383,7 @@ namespace ApiRestAlchemy.Controllers
         /// 
         /// </ADVERTENCIA!,MovieId es identidad ,es decir dejar en Valor 0 que actualizara automaticamente>
         /// 
-        [HttpGet("/get/imagemovie")]
+        [HttpGet("/get/imagemovie/{name}")]
         public IActionResult GetImage(string name)
         {
             var pelicula = _context.PeliculasOseries.FirstOrDefault(a => a.Titulo == name);
@@ -392,7 +392,7 @@ namespace ApiRestAlchemy.Controllers
             return File(b,"image/jpg");
 
         }
-        [HttpPost("/new/imagemovie")]
+        [HttpPost("/new/imagemovie/{name}")]
         public async Task<ActionResult<PeliculaOserie>> PostMovie(string name ,[Bind]IFormFile files)
 
         {

@@ -16,7 +16,7 @@ namespace ApiRestAlchemy.Controllers
    
 
    [Route("api/[controller]")]
-  //[Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
+  [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
 
     [ApiController]
     public class GeneralController : ControllerBase

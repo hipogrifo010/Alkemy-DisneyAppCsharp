@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Controllers"
+    "\\Controllers",
+    "\\Img"
   ],
-  "SelectedNode": "\\Alkemy-DisneyAppCsharp",
+  "SelectedNode": "\\Img\\Characters",
   "PreviewInSolutionExplorer": false
 }

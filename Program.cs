@@ -29,24 +29,43 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 
 builder.Services.AddTransient<IMailService, SendGridMailService>();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-                 options.TokenValidationParameters = new TokenValidationParameters
-                 {
-                     ValidateIssuer = true,
-                     ValidateAudience = true,
-                     ValidateLifetime = true,
-                     ValidateIssuerSigningKey = true,
-                     ValidIssuer = "yourdomain.com",
-                     ValidAudience = "yourdomain.com",
-                     IssuerSigningKey = new SymmetricSecurityKey(
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; x.DefaultChallengeScheme =
+                                            JwtBearerDefaults.AuthenticationScheme;
+}).AddCookie(x => { x.Cookie.Name = "token"; }).AddJwtBearer(x => {
+    x.RequireHttpsMetadata = false;
+    x.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context => { context.Token = context.Request.Cookies["token"]; return Task.CompletedTask; }
+    };
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = "localhost",
+        ValidAudience = "localhost",
+        IssuerSigningKey = new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(configuration["Llave_super_secreta"])),
-                     ClockSkew = TimeSpan.Zero
-                 });
+        ClockSkew = TimeSpan.Zero
+    };
+    
+
+    
+});
 
 
 builder.Services.AddCors(options => 
                         { var frontEndUrl = configuration.GetValue<string>("frontend_url");
-                            options.AddDefaultPolicy(builder => { builder.WithOrigins(frontEndUrl).AllowAnyMethod().AllowAnyHeader();
+                            options.AddDefaultPolicy(builder => { builder
+                                .WithOrigins( frontEndUrl )
+                                .AllowAnyMethod()
+                                .AllowAnyHeader()
+                                .AllowCredentials();
                             });
                         });
 
@@ -70,12 +89,11 @@ app.UseHttpsRedirection();
 
 app.UseCors();
 
-app.MapControllers();
-
 app.UseAuthorization();
 
 app.UseAuthentication();
 
+app.MapControllers();
 
 
 app.Run();

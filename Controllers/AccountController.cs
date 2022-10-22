@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ApiRestAlchemy.Database;
 using ApiRestAlchemy.Services;
+using NuGet.Common;
+using NuGet.Protocol;
 
 namespace ApiRestAlchemy.Controllers
 {
@@ -93,7 +95,7 @@ namespace ApiRestAlchemy.Controllers
             }
         }
 
-        private IActionResult BuildToken(UserInfo userInfo)
+        private  IActionResult BuildToken(UserInfo userInfo)
         {
             var claims = new[]
             {
@@ -107,19 +109,35 @@ namespace ApiRestAlchemy.Controllers
 
             var expiration = DateTime.UtcNow.AddHours(1);
 
-            JwtSecurityToken token = new JwtSecurityToken(
-               issuer: "yourdomain.com",
-               audience: "yourdomain.com",
+            JwtSecurityToken tokenIn = new JwtSecurityToken(
+               issuer: "localhost",
+               audience: "localhost",
                claims: claims,
                expires: expiration,
                signingCredentials: creds);
+               
 
-            return Ok(new
-            {
-                token = new JwtSecurityTokenHandler().WriteToken(token),
-                expiration = expiration
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+           // var token = tokenHandler.CreateJwtSecurityToken(tokenIn);
+            var encryptedToken=tokenHandler.WriteToken(tokenIn);
+
+            var token = encryptedToken;
+
+            const string Xaccesstoken = "token";
+            Response.Cookies.Append(Xaccesstoken, encryptedToken,new CookieOptions 
+            { 
+             
+             Secure = true,
+             HttpOnly=true ,
+             SameSite=SameSiteMode.None,
+             IsEssential =true,
+             Expires=DateTime.Now.AddDays(1)
+           
             });
 
+            return Ok(Response.Cookies);
         }
 
 

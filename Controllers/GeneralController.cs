@@ -10,6 +10,7 @@ using System.Web;
 using Microsoft.AspNetCore.Hosting;
 using ApiRestAlchemy.Database.ViewModel;
 using System.Diagnostics;
+using System.Xml.Linq;
 
 namespace ApiRestAlchemy.Controllers
 {
@@ -457,22 +458,24 @@ namespace ApiRestAlchemy.Controllers
 
         /// <PUTMOVIE>
         /// 
-        /// </ingresar id de la pelicula como Value, y tambien dentro del BODY>
+        /// </no es necesario modificar el valor de id movie dentro del body(dejar en 0 y el id de la pelicula se aplicara automaticamente desde id)>
         [HttpPut("/edit/movies/{id}")]
-        public async Task<ActionResult<PeliculaOserie>> MovieModification(int id,PeliculaDTOtoPost peliput)
+        public async Task<ActionResult<PeliculaOserie>> MovieModification(int id,PeliculaDTOtoPut peliput)
         {
 
+            
             PeliculaOserie peliculaoSerie = new()
-            {
-                MovieId = peliput.MovieId,
+            { 
+                MovieId= id,
                 Titulo = peliput.Titulo,
-                Imagen = peliput.Imagen,
+                Imagen = _context.PeliculasOseries.Where(a => a.MovieId == id).Select(c=>c.Imagen).FirstOrDefault(),
                 FechaDeCreacion = peliput.FechaDeCreacion,
                 Calificacion = peliput.Calificacion,
                 PersonajesAsociados = peliput.PersonajesAsociados,
                 GenreId = peliput.GenreId
             };
-
+            
+            
             if (id!=peliculaoSerie.MovieId)
             {
                 return BadRequest();

@@ -291,12 +291,6 @@ namespace ApiRestAlchemy.Controllers
             int movieNameById = _context.PeliculasOseries.Where(x => x.Titulo.Equals(MovieName))
                                                .Select(x => x.MovieId).FirstOrDefault();
 
-
-            var characterByMovieId = _context.Personajes.Join(_context.PeliculasOseries, personaje => personaje.MovieId,
-                                     pelicula => pelicula.MovieId, (personaje, pelicula) => new { pelicula, personaje })
-                                    .Where(x => x.personaje.MovieId == movieNameById);
-
-         
             
             var moviebydetails = _context.PeliculasOseries.Where(x => x.Titulo.Equals(MovieName))
                 .Select(x => new {
@@ -308,17 +302,16 @@ namespace ApiRestAlchemy.Controllers
                             x.PersonajesAsociados,
                             x.GenreId
                         }).Distinct();
+
           
-            //moviebydetails.ToList().ForEach(c => c.FechaDeCreacion.ToShortDateString());
-            //var moviebydetails = moviebydetailse.Any().FechaDeCreacion.ToShortDateString();
+            var personList = _context.Personajes;
 
-            var onlyCharacters = characterByMovieId.Where(x => x.personaje.PeliculaOserie.MovieId.Equals(movieNameById)).Select(x => new
-            { x.personaje.Nombre});
+            var onlyCharacters = personList.Where(x => x.MovieId.Equals(movieNameById)).Select(x => new
+            { x.Nombre });
 
-            
             if (_context.Personajes.Any(x => x.MovieId == movieNameById))
             {
-                var allcharactedlisted = _context.Personajes.Select(x => x.Nombre);
+                var allcharactedlisted =onlyCharacters.Select(x => x.Nombre);
                 return Ok(new { moviebydetails, allcharactedlisted });
 
             }
@@ -543,11 +536,6 @@ namespace ApiRestAlchemy.Controllers
           Imagen = todoItem.Imagen,
 
         };
-      
-
-  
-       
-
 
     }
 
